@@ -6,8 +6,7 @@ import { SignIn, SignInButton, useUser, UserButton, SignOutButton } from '@clerk
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
+  const {data} = api.posts.getAll.useQuery();
 
   // To check if user is authenticated or not 
   const user = useUser();
@@ -32,10 +31,13 @@ const Home: NextPage = () => {
               {!!user.isSignedIn && <SignOutButton />}
                 
             </div>
+            <div>
+              {data?.map((post) => (
+                <div key={post.id}>{post.content}</div>
+              ))}
+            </div>
           </div>
-          <p className="text-2xl text-white">
-            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-          </p>
+          
         </div>
       </main>
     </>
